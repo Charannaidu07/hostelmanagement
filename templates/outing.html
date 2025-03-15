@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div style="text-align: center;" class="p-3">
+        <h3>Outing Details</h3>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <img src="{% if stay.profile_picture %}{{ stay.profile_picture.url }}{% else %}/static/images/default-profile.png{% endif %}" 
+                class="img-fluid rounded-circle"
+                alt="Profile Image"
+                style="width: 150px; height: 150px; object-fit: cover;">
+        </div>
+
+        <!-- Button to Request Outing (Redirects to Outing Request Page) -->
+        <a href="{% url 'outing_request' %}" class="btn my-3" 
+            style="background: #eaf5ea; border: 1px solid #c3e6c3; color: #155724; 
+                font-weight: bold; padding: 10px 20px; border-radius: 8px; 
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); transition: all 0.3s;">
+            Request New Outing
+        </a>
+
+
+        <!-- Outing History Table -->
+        <h3>Outing History</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Outing Type</th>
+                    <th>Out Date</th>
+                    <th>Out Time</th>
+                    <th>In Date</th>
+                    <th>In Time</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outing in outings %}
+                <tr>
+                    <td>{{ outing.outtype }}</td>
+                    <td>{{ outing.outdate }}</td>
+                    <td>{{ outing.outtime }}</td>
+                    <td>{{ outing.indate }}</td>
+                    <td>{{ outing.intime }}</td>
+                    <td>{{ outing.reason }}</td>
+                    <td>
+                        {% if outing.approved %}
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4">No outing records found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>
